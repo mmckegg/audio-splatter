@@ -1,0 +1,23 @@
+{
+  "name": "audio-splatter",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cwise": "^1.0.9",
+    "electron-prebuilt": "^0.37.2",
+    "ftdi": "github:mmckegg/node-ftdi",
+    "ndarray": "^1.0.18"
+  },
+  "devDependencies": {}
+}
