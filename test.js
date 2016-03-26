@@ -31,7 +31,6 @@ connect(0, function (err, send) {
     lastStrand = strand
     send(getFrame(strand))
   }, 1000 / 60)
-
 })
 
 function Strand (length) {

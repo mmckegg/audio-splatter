@@ -2,18 +2,21 @@ var getFrame = require('./lib/pixels-apa102')
 var connect = require('./lib/ftdi-spi')
 var hslToRgb = require('./lib/hsl-to-rgb')
 var NdArray = require('ndarray')
+var listen = require('./server')
 
 var stripLength = 60 * 6
 var rate = 100 // fps
-var spread = 0.99
+var spread = 1
+var hueOffset = 0.001
 var smoothing = 0.8
-var minDecibels = -60
+var minDecibels = -70
 var maxDecibels = -5
 var channel = 0
 
 var container = document.createElement('div')
 container.style.display = 'flex'
-container.style.height = '100px'
+container.style.position = 'absolute'
+container.style.top = container.style.bottom = container.style.left = container.style.right = 0
 
 for (var i = 0; i < stripLength; i++) {
   var element = document.createElement('div')
@@ -32,6 +35,15 @@ document.body.appendChild(container)
 
 var audioContext = new window.AudioContext()
 var send = connect(channel)
+
+var lastMessageAt = null
+
+listen(8080, function (pixels) {
+  send(getFrame(pixels))
+  preview(pixels)
+  lastMessageAt = Date.now()
+})
+
 var analysers = []
 navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
   var input = audioContext.createMediaStreamSource(stream)
@@ -47,6 +59,11 @@ var layerR = Strand(stripLength)
 var t = 0
 
 function tick () {
+  if (lastMessageAt > Date.now() - 100) {
+    // overriding
+    return
+  }
+
   var state = Strand(stripLength)
   t += 1
 
@@ -55,13 +72,13 @@ function tick () {
     analysers[i][1].getByteFrequencyData(valuesR)
     var hue = (Date.now() % 10000) / 10000
     var lastSel = 0
-    for (var x = 0; x < stripLength; x++) {
+    for (var x = 0; x < stripLength / 2; x++) {
       var sel = Math.floor(Math.pow(x, spread))
       var lL = average(valuesL, lastSel, sel) / 256
       var lR = average(valuesR, lastSel, sel) / 256
       var mult = (0.8 + (sel / valuesL.length))
-      set(layerL, x, hslToRgb(hue + (0.0005 * x), 1, lL * mult))
-      set(layerR, stripLength - x - 1, hslToRgb(hue + (0.001 * x), 1, lR * mult))
+      set(layerL, (stripLength / 2) - x, hslToRgb(hue + (hueOffset * x), 1, lL * mult))
+      set(layerR, (stripLength / 2) + x, hslToRgb(hue + (hueOffset * x), 1, lR * mult))
       lastSel = sel
     }
 
@@ -88,7 +105,7 @@ function average (array, from, to) {
     sum += array[i]
     count += 1
   }
-  return sum / count
+  return (sum / count) || 0
 }
 
 function Strand (length) {

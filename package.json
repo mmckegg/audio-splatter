@@ -14,10 +14,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bufferutil": "^1.2.1",
     "cwise": "^1.0.9",
     "electron-prebuilt": "^0.37.2",
     "ftdi": "github:mmckegg/node-ftdi",
-    "ndarray": "^1.0.18"
+    "ndarray": "^1.0.18",
+    "ws": "^1.0.1"
   },
   "devDependencies": {}
 }
