@@ -3,6 +3,7 @@ var connect = require('./lib/ftdi-spi')
 var hslToRgb = require('./lib/hsl-to-rgb')
 var NdArray = require('ndarray')
 var listen = require('./server')
+var workerTimer = require('worker-timer')
 
 var stripLength = 60 * 6
 var rate = 100 // fps
@@ -90,7 +91,7 @@ function tick () {
   preview(state)
 }
 
-setInterval(tick, 1000 / rate)
+workerTimer.setInterval(tick, 1000 / rate)
 
 function overlay (target, arr) {
   for (var i = 0; i < target.length; i++) {
