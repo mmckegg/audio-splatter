@@ -7,9 +7,7 @@ var hslToRgb = require('./lib/hsl-to-rgb')
 module.exports = Visualizer
 
 function Visualizer (context) {
-  var obs = ObservStruct({
-    //port: midiPort
-  })
+  var obs = ObservStruct({ })
 
   var send = connect(0)
 
@@ -17,9 +15,17 @@ function Visualizer (context) {
   var project = context.project
   var analysers = []
 
-  project.items.onLoad(function (item) {
-    var analysersForChunk = []
+  project.items.onLoad(attachTo)
+  project.items.forEach(attachTo)
+
+  var valuesL = new Uint8Array(4096)
+  var valuesR = new Uint8Array(4096)
+  var layerL = Strand(width)
+  var layerR = Strand(width)
+
+  function attachTo (item) {
     if (item.node._type === 'LoopDropSetup') {
+      var analysersForChunk = []
       setTimeout(function () {
         var chunks = getOutputChunks(item.node.chunks)
         chunks.forEach(function (chunk, i) {
@@ -44,12 +50,7 @@ function Visualizer (context) {
         })
       })
     }
-  })
-
-  var valuesL = new Uint8Array(4096)
-  var valuesR = new Uint8Array(4096)
-  var layerL = Strand(width)
-  var layerR = Strand(width)
+  }
 
   function tick () {
     var state = Strand(width)
@@ -65,16 +66,6 @@ function Visualizer (context) {
       }
       var h = analysers[i][3]
       var lastSel = 0
-      // for (var x = 0; x < width; x++) {
-      //   var sel = Math.floor(Math.pow(x, 1.4))
-      //   var lL = valuesL[sel] / 256 //average(valuesL, lastSel, sel) / 256
-      //   var lR = valuesR[sel] / 256 //average(valuesR, lastSel, sel) / 256
-      //   var mult = (0.3 + (sel / valuesL.length) * 0.8) * volume
-      //   lastSel = sel
-      //
-      //   set(layerL, x, hslToRgb(h + (0.002 * x), 1, lL * mult))
-      //   set(layerR, width - x - 1, hslToRgb(h + (0.002 * x), 1, lR * mult))
-      // }
 
       for (var x = 0; x < width / 2; x++) {
         var sel = Math.floor(Math.pow(x, 2))
