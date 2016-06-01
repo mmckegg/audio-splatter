@@ -14,9 +14,17 @@ function Visualizer (context) {
   var project = context.project
   var analysers = []
 
-  project.items.onLoad(function (item) {
-    var analysersForChunk = []
+  project.items.forEach(attachTo)
+  project.items.onLoad(attachTo)
+
+  var valuesL = new Uint8Array(4096)
+  var valuesR = new Uint8Array(4096)
+  var layerL = Strand(width)
+  var layerR = Strand(width)
+
+  function attachTo (item) {
     if (item.node._type === 'LoopDropSetup') {
+      var analysersForChunk = []
       setTimeout(function () {
         var chunks = getOutputChunks(item.node.chunks)
         chunks.forEach(function (chunk, i) {
@@ -41,12 +49,7 @@ function Visualizer (context) {
         })
       })
     }
-  })
-
-  var valuesL = new Uint8Array(4096)
-  var valuesR = new Uint8Array(4096)
-  var layerL = Strand(width)
-  var layerR = Strand(width)
+  }
 
   function tick () {
     var state = Strand(width)
