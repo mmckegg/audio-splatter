@@ -15,9 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "browserify": "^13.0.0",
-    "bufferutil": "^1.2.1",
     "cwise": "^1.0.9",
-    "electron-prebuilt": "^0.37.2",
+    "electron-prebuilt": "^0.37.8",
     "ftdi": "github:mmckegg/node-ftdi",
     "ndarray": "^1.0.18",
     "pixels-canvas": "^1.0.2",
