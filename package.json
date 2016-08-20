@@ -14,14 +14,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@mmckegg/mutant": "^1.0.0",
+    "bindings": "^1.2.1",
     "browserify": "^13.0.0",
     "cwise": "^1.0.9",
-    "electron-prebuilt": "^0.37.8",
+    "electron-prebuilt": "^0.36.12",
     "ftdi": "github:mmckegg/node-ftdi",
     "ndarray": "^1.0.18",
     "pixels-canvas": "^1.0.2",
     "worker-timer": "^1.0.0",
     "ws": "^1.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "electron-rebuild": "^1.2.0"
+  }
 }
