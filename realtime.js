@@ -49,7 +49,7 @@ function preview (state) {
 }
 
 var bassMeter = h('meter', { min: 0, max: 1, style: {width: '400px', 'margin-right': '3px'} })
-var trebbleMeter = h('meter', { min: 0, max: 1, style: {width: '400px'} })
+var trebleMeter = h('meter', { min: 0, max: 1, style: {width: '400px'} })
 
 document.body.appendChild(container)
 document.body.appendChild(h('div', {
@@ -58,7 +58,7 @@ document.body.appendChild(h('div', {
   }
 }, [
   h('div', {style: {width: '100%'}}, [
-    bassMeter, trebbleMeter
+    bassMeter, trebleMeter
   ]),
   h('div', {
     style: {
@@ -120,32 +120,24 @@ function tick () {
     analysers[i][1].getByteFrequencyData(valuesR)
 
     var bassValue = Math.min(120, average(valuesL, 0, 8)) / 120
-    var trebbleValue = Math.min(20, average(valuesL, 70, 1000)) / 20
+    var trebleValue = Math.min(20, average(valuesL, 70, 1000)) / 20
 
-    blackout(state, params.smoothing.getValue(bassValue, trebbleValue))
+    blackout(state, params.smoothing.getValue(bassValue, trebleValue))
 
     bassMeter.value = bassValue
-    trebbleMeter.value = trebbleValue
+    trebleMeter.value = trebleValue
 
-    analysers[i][2] = mod(analysers[i][2] + (params.hueCycleSpeed.getValue(bassValue, trebbleValue)), 360)
-    analysers[i][3] = analysers[i][3] + (params.offsetSpeed.getValue(bassValue, trebbleValue))
+    analysers[i][2] = mod(analysers[i][2] + (params.hueCycleSpeed.getValue(bassValue, trebleValue)), 360)
+    analysers[i][3] = analysers[i][3] + (params.offsetSpeed.getValue(bassValue, trebleValue))
 
     var baseHue = analysers[i][2] / 360
-    var xOffset = Math.round(analysers[i][3] + params.offset.getValue(bassValue, trebbleValue))
+    var xOffset = Math.round(analysers[i][3] + params.offset.getValue(bassValue, trebleValue))
 
-    var brightness = params.brightness.getValue(bassValue, trebbleValue)
-    var saturation = Math.min(0.9, params.saturation.getValue(bassValue, trebbleValue))
-    var spread = Math.max(0, Math.min(params.spread.getValue(bassValue, trebbleValue), 1.5)) || 1
-    var hueOffset = params.hueOffset.getValue(bassValue, trebbleValue) / 360
-    var hueOffsetLR = params.hueOffsetLR.getValue(bassValue, trebbleValue) / 360
-
-    // hue cycle speed
-    // hue cycle mode
-    // hue x offset
-    // hue LR offset
-
-    // bass layer
-    // trebble layer
+    var brightness = params.brightness.getValue(bassValue, trebleValue)
+    var saturation = Math.min(0.9, params.saturation.getValue(bassValue, trebleValue))
+    var spread = Math.max(0, Math.min(params.spread.getValue(bassValue, trebleValue), 1.5)) || 1
+    var hueOffset = params.hueOffset.getValue(bassValue, trebleValue) / 360
+    var hueOffsetLR = params.hueOffsetLR.getValue(bassValue, trebleValue) / 360
 
     var lastSel = 0
     for (var x = 0; x < stripLength / 2; x++) {
@@ -239,11 +231,11 @@ function LinkedValue (value) {
   var res = Struct({
     value: Value(value),
     bassInfluence: Value(0),
-    trebbleInfluence: Value(0)
+    trebleInfluence: Value(0)
   })
 
-  res.getValue = function (bassMultiplier, trebbleMultipler) {
-    return res.value() + (bassMultiplier * Math.pow(res.bassInfluence(), 3)) + (trebbleMultipler * Math.pow(res.trebbleInfluence(), 3))
+  res.getValue = function (bassMultiplier, trebleMultipler) {
+    return res.value() + (bassMultiplier * Math.pow(res.bassInfluence(), 3)) + (trebleMultipler * Math.pow(res.trebleInfluence(), 3))
   }
 
   return res
@@ -276,7 +268,7 @@ function LinkedSliders (obs, opts) {
       step: 0.01,
       max: opts.max,
       hooks: [
-        ValueHook(obs.trebbleInfluence)
+        ValueHook(obs.trebleInfluence)
       ]
     })
   ])
