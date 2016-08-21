@@ -282,6 +282,7 @@ function ValueHook (obs) {
     }
     element.ondblclick = function () {
       element.value = defaultValue
+      obs.set(defaultValue)
     }
     return watch(obs, function (value) {
       element.value = value
