@@ -11,7 +11,7 @@ function Visualizer (context) {
 
   var send = connect(0)
 
-  var width = 60
+  var width = 59 * 2
   var project = context.project
   var analysers = []
 
@@ -60,15 +60,15 @@ function Visualizer (context) {
       analysers[i][1].getByteFrequencyData(valuesR)
       var volume = 1
       var setup = analysers[i][2].context.setup
-      if (setup && setup.output) {
-        // use level from global launch control
-        volume = setup.output.gain.value
+      if (setup) {
+        // include global mixer levels
+        volume = setup.overrideVolume() * setup.volume() * (1 - setup.overrideLowPass()) * (1 - setup.overrideHighPass())
       }
       var h = analysers[i][3]
       var lastSel = 0
 
       for (var x = 0; x < width / 2; x++) {
-        var sel = Math.floor(Math.pow(x, 2))
+        var sel = Math.floor(Math.pow(x, 1))
         var lL = average(valuesL, lastSel, sel) / 256
         var lR = average(valuesR, lastSel, sel) / 256
         var mult = (0.5 + (sel / valuesL.length) * 2) * volume

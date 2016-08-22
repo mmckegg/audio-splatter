@@ -9,9 +9,10 @@ function Visualizer (context) {
     //port: midiPort
   })
 
-  var sendToLEDs = RemoteLEDs('ws://Matts-Macbook-Air.local:8080')
+  var sendToLEDs = RemoteLEDs('ws://localhost:1337')
 
   var width = 60 * 6
+  var spread = 1.1
   var project = context.project
   var analysers = []
 
@@ -57,21 +58,21 @@ function Visualizer (context) {
       analysers[i][1].getByteFrequencyData(valuesR)
       var volume = 1
       var setup = analysers[i][2].context.setup
-      if (setup && setup.output) {
-        // use level from global launch control
-        volume = setup.output.gain.value
+      if (setup) {
+        // include global mixer levels
+        volume = setup.overrideVolume() * setup.volume() * (1 - setup.overrideLowPass()) * (1 - setup.overrideHighPass())
       }
       var h = analysers[i][3]
       var lastSel = 0
       for (var x = 0; x < width / 2; x++) {
-        var sel = Math.floor(Math.pow(x, 1))
+        var sel = Math.floor(Math.pow(x, spread))
         var lL = average(valuesL, lastSel, sel) / 256
         var lR = average(valuesR, lastSel, sel) / 256
-        var mult = (0.5 + (sel / valuesL.length)) * volume
+        var mult = (0.5 + (sel / valuesL.length) * 2) * volume
         lastSel = sel
 
-        set(layerL, (width / 2) - x, hslToRgb(h + (0.001 * x), 1, lL * mult))
-        set(layerR, (width / 2) + x, hslToRgb(h + (0.001 * x), 1, lR * mult))
+        set(layerL, (width / 2) - x - 1, hslToRgb(h + (0.002 * x), 1, lL * mult))
+        set(layerR, (width / 2) + x, hslToRgb(h + (0.002 * x), 1, lR * mult))
       }
 
       overlay(state.data, layerL.data)
@@ -135,7 +136,7 @@ function getAnalysers (output) {
 function getAnalyser (splitter, channel) {
   var analyser = splitter.context.createAnalyser()
   analyser.smoothingTimeConstant = 0.1
-  analyser.minDecibels = -80
+  analyser.minDecibels = -70
   analyser.maxDecibels = 0
   analyser.fftSize = 2048
   splitter.connect(analyser, channel)

@@ -84,7 +84,7 @@ var send = connect(channel)
 
 var lastMessageAt = null
 
-listen(8080, function (pixels) {
+listen(1337, function (pixels) {
   send(getFrame(pixels))
   preview(pixels)
   lastMessageAt = Date.now()
@@ -114,8 +114,6 @@ function tick () {
   t += 1
 
   for (var i = 0; i < analysers.length; i++) {
-
-
     analysers[i][0].getByteFrequencyData(valuesL)
     analysers[i][1].getByteFrequencyData(valuesR)
 
