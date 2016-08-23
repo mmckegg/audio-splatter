@@ -1,11 +1,11 @@
-var ObservStruct = require('observ-struct')
+var Struct = require('@mmckegg/mutant/struct')
 var RemoteLEDs = require('./led-client')
 var NdArray = require('ndarray')
 
 module.exports = Visualizer
 
 function Visualizer (context) {
-  var obs = ObservStruct({
+  var obs = Struct({
     //port: midiPort
   })
 
@@ -71,8 +71,8 @@ function Visualizer (context) {
         var mult = (0.5 + (sel / valuesL.length) * 2) * volume
         lastSel = sel
 
-        set(layerL, (width / 2) - x - 1, hslToRgb(h + (0.002 * x), 1, lL * mult))
-        set(layerR, (width / 2) + x, hslToRgb(h + (0.002 * x), 1, lR * mult))
+        set(layerL, (width / 2) - x - 1, hslToRgb(h + (0.0002 * x), 1, lL * mult))
+        set(layerR, (width / 2) + x, hslToRgb(h + (0.0005 * x), 1, lR * mult))
       }
 
       overlay(state.data, layerL.data)
@@ -148,7 +148,7 @@ function getOutputChunks (nodes) {
   nodes.forEach(function (chunk) {
     var node = chunk.node || chunk
     var output = node.context.output
-    var routes = chunk().routes
+    var routes = chunk.resolved().routes
     if (output && routes && routes.output === '$default') {
       result.push(chunk)
     }

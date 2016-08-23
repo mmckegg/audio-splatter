@@ -1,4 +1,4 @@
-var ObservStruct = require('observ-struct')
+var Struct = require('@mmckegg/mutant/struct')
 var getFrame = require('./lib/pixels-apa102')
 var connect = require('./lib/ftdi-spi')
 var NdArray = require('ndarray')
@@ -7,7 +7,7 @@ var hslToRgb = require('./lib/hsl-to-rgb')
 module.exports = Visualizer
 
 function Visualizer (context) {
-  var obs = ObservStruct({ })
+  var obs = Struct({ })
 
   var send = connect(0)
 

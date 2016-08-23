@@ -1,4 +1,4 @@
-var ObservStruct = require('observ-struct')
+var Struct = require('@mmckegg/mutant/struct')
 var Server = require('./server')
 var NdArray = require('ndarray')
 var hslToRgb = require('../lib/hsl-to-rgb')
@@ -6,7 +6,7 @@ var hslToRgb = require('../lib/hsl-to-rgb')
 module.exports = Visualizer
 
 function Visualizer (context) {
-  var obs = ObservStruct({})
+  var obs = Struct({})
 
   var send = Server(8080)
 
