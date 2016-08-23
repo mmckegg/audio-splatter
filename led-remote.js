@@ -71,7 +71,7 @@ function Visualizer (context) {
         var mult = (0.5 + (sel / valuesL.length) * 2) * volume
         lastSel = sel
 
-        set(layerL, (width / 2) - x - 1, hslToRgb(h + (0.0002 * x), 1, lL * mult))
+        set(layerL, (width / 2) - x - 1, hslToRgb(h + (0.0005 * x), 1, lL * mult))
         set(layerR, (width / 2) + x, hslToRgb(h + (0.0005 * x), 1, lR * mult))
       }
 
