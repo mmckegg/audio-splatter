@@ -2,6 +2,14 @@
 
 ## install
 
+```shell
+git clone git://github.com/mmckegg/audio-splatter
+cd audio-splatter
+npm install
+npm run rebuild
+npm start
+```
+
 ### Debian Linux
 
 install [`node-ftdi`](https://github.com/mmckegg/node-ftdi) using `node_modules/node-ftdi/install.sh` script
