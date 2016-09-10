@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "rebuild": "electron-rebuild"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,6 @@
     "ftdi": "github:mmckegg/node-ftdi",
     "ndarray": "^1.0.18",
     "pixels-canvas": "^1.0.2",
-    "require-rebuild": "^1.2.8",
     "worker-timer": "^1.0.0",
     "ws": "^1.0.1"
   },
