@@ -2,6 +2,21 @@
 
 ## install
 
+```bash
+$ npm run rebuild
+```
+
+```shell
+git clone git://github.com/mmckegg/audio-splatter
+cd audio-splatter
+npm install
+
+# rebuild ftdi for electron
+npm run rebuild
+
+npm start
+```
+
 ### Debian Linux
 
 install [`node-ftdi`](https://github.com/mmckegg/node-ftdi) using `node_modules/node-ftdi/install.sh` script
