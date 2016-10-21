@@ -2,10 +2,6 @@
 
 ## install
 
-```bash
-$ npm run rebuild
-```
-
 ```shell
 git clone git://github.com/mmckegg/audio-splatter
 cd audio-splatter
